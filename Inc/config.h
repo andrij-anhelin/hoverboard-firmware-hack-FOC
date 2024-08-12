@@ -759,9 +759,11 @@
   #error CONTROL_PPM_RIGHT and SERIAL_USART3 not allowed. It is on the same cable.
 #endif
 
+/*
 #if defined(CONTROL_PWM_RIGHT) && (defined(CONTROL_SERIAL_USART3) || defined(SIDEBOARD_SERIAL_USART3) || defined(FEEDBACK_SERIAL_USART3) || defined(DEBUG_SERIAL_USART3))
   #error CONTROL_PWM_RIGHT and SERIAL_USART3 not allowed. It is on the same cable.
 #endif
+*/
 
 #if defined(DEBUG_I2C_LCD) && (defined(CONTROL_SERIAL_USART3) || defined(SIDEBOARD_SERIAL_USART3) || defined(FEEDBACK_SERIAL_USART3) || defined(DEBUG_SERIAL_USART3))
   #error DEBUG_I2C_LCD and SERIAL_USART3 not allowed. It is on the same cable.
