@@ -17,6 +17,13 @@ jobs:
     - uses: carlosperate/arm-none-eabi-gcc-action@v1
       with:
         release: '9-2019-q4'
+        
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 18
+    - run: npm ci
+    - run: npm test
 
     # Build with make
     - name: make
@@ -38,6 +45,7 @@ jobs:
         path: ${{github.workspace}}/.pio/build/**
         name: ${{github.event.repository.name}}_build_${{github.run_number}}
         retention-days: 5
+
 
 
 
