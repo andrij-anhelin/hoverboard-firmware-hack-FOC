@@ -14,7 +14,7 @@
   //#define VARIANT_USART       // Variant for Serial control via USART3 input
   //#define VARIANT_NUNCHUK     // Variant for Nunchuk controlled vehicle build
   //#define VARIANT_PPM         // Variant for RC-Remote with PPM-Sum Signal
-  #define VARIANT_PWM         //// Variant for RC-Remote with PWM Signal
+  #define VARIANT_PWM         // Variant for RC-Remote with PWM Signal
   //#define VARIANT_IBUS        // Variant for RC-Remotes with FLYSKY IBUS
   //#define VARIANT_HOVERCAR    // Variant for HOVERCAR build
   //#define VARIANT_HOVERBOARD  // Variant for HOVERBOARD build
@@ -25,39 +25,37 @@
 
 
 // ############################### DO-NOT-TOUCH SETTINGS ###############################
-#ifdef CONFIG_H
-  #define PWM_FREQ               16000  // PWM frequency in Hz / is also used for buzzer
-  #define DEAD_TIME                 48  // PWM deadtime
-  #ifdef VARIANT_TRANSPOTTER
-    #define DELAY_IN_MAIN_LOOP       2
-  #else
-    #define DELAY_IN_MAIN_LOOP       5  // in ms. default 5. it is independent of all the timing critical stuff. do not touch if you do not know what you are doing.
-  #endif
-  #define TIMEOUT                   20  // number of wrong / missing input commands before emergency off
-  #define A2BIT_CONV                50  // A to bit for current conversion on ADC. Example: 1 A = 50, 2 A = 100, etc
-  // #define PRINTF_FLOAT_SUPPORT       // [-] Uncomment this for printf to support float on Serial Debug. It will increase code size! Better to avoid it!
-
-  // ADC conversion time definitions
-  #define ADC_CONV_TIME_1C5        (14) //Total ADC clock cycles / conversion = (  1.5+12.5)
-  #define ADC_CONV_TIME_7C5        (20) //Total ADC clock cycles / conversion = (  7.5+12.5)
-  #define ADC_CONV_TIME_13C5       (26) //Total ADC clock cycles / conversion = ( 13.5+12.5)
-  #define ADC_CONV_TIME_28C5       (41) //Total ADC clock cycles / conversion = ( 28.5+12.5)
-  #define ADC_CONV_TIME_41C5       (54) //Total ADC clock cycles / conversion = ( 41.5+12.5)
-  #define ADC_CONV_TIME_55C5       (68) //Total ADC clock cycles / conversion = ( 55.5+12.5)
-  #define ADC_CONV_TIME_71C5       (84) //Total ADC clock cycles / conversion = ( 71.5+12.5)
-  #define ADC_CONV_TIME_239C5     (252) //Total ADC clock cycles / conversion = (239.5+12.5)
-
-  // This settings influences the actual sample-time. Only use definitions above
-  // This parameter needs to be the same as the ADC conversion for Current Phase of the FIRST Motor in setup.c
-  #define ADC_CONV_CLOCK_CYCLES   (ADC_CONV_TIME_7C5)
-
-  // Set the configured ADC divider. This parameter needs to be the same ADC divider as PeriphClkInit.AdcClockSelection (see main.c)
-  #define ADC_CLOCK_DIV           (4)
-
-  // ADC Total conversion time: this will be used to offset TIM8 in advance of TIM1 to align the Phase current ADC measurement
-  // This parameter is used in setup.c
-  #define ADC_TOTAL_CONV_TIME     (ADC_CLOCK_DIV * ADC_CONV_CLOCK_CYCLES) // = ((SystemCoreClock / ADC_CLOCK_HZ) * ADC_CONV_CLOCK_CYCLES), where ADC_CLOCK_HZ = SystemCoreClock/ADC_CLOCK_DIV
+#define PWM_FREQ            16000     // PWM frequency in Hz / is also used for buzzer
+#define DEAD_TIME              48     // PWM deadtime
+#ifdef VARIANT_TRANSPOTTER
+  #define DELAY_IN_MAIN_LOOP    2
+#else
+  #define DELAY_IN_MAIN_LOOP    5     // in ms. default 5. it is independent of all the timing critical stuff. do not touch if you do not know what you are doing.
 #endif
+#define TIMEOUT                20     // number of wrong / missing input commands before emergency off
+#define A2BIT_CONV             50     // A to bit for current conversion on ADC. Example: 1 A = 50, 2 A = 100, etc
+// #define PRINTF_FLOAT_SUPPORT          // [-] Uncomment this for printf to support float on Serial Debug. It will increase code size! Better to avoid it!
+
+// ADC conversion time definitions
+#define ADC_CONV_TIME_1C5       (14)  //Total ADC clock cycles / conversion = (  1.5+12.5)
+#define ADC_CONV_TIME_7C5       (20)  //Total ADC clock cycles / conversion = (  7.5+12.5)
+#define ADC_CONV_TIME_13C5      (26)  //Total ADC clock cycles / conversion = ( 13.5+12.5)
+#define ADC_CONV_TIME_28C5      (41)  //Total ADC clock cycles / conversion = ( 28.5+12.5)
+#define ADC_CONV_TIME_41C5      (54)  //Total ADC clock cycles / conversion = ( 41.5+12.5)
+#define ADC_CONV_TIME_55C5      (68)  //Total ADC clock cycles / conversion = ( 55.5+12.5)
+#define ADC_CONV_TIME_71C5      (84)  //Total ADC clock cycles / conversion = ( 71.5+12.5)
+#define ADC_CONV_TIME_239C5     (252) //Total ADC clock cycles / conversion = (239.5+12.5)
+
+// This settings influences the actual sample-time. Only use definitions above
+// This parameter needs to be the same as the ADC conversion for Current Phase of the FIRST Motor in setup.c
+#define ADC_CONV_CLOCK_CYCLES   (ADC_CONV_TIME_7C5)
+
+// Set the configured ADC divider. This parameter needs to be the same ADC divider as PeriphClkInit.AdcClockSelection (see main.c)
+#define ADC_CLOCK_DIV           (4)
+
+// ADC Total conversion time: this will be used to offset TIM8 in advance of TIM1 to align the Phase current ADC measurement
+// This parameter is used in setup.c
+#define ADC_TOTAL_CONV_TIME     (ADC_CLOCK_DIV * ADC_CONV_CLOCK_CYCLES) // = ((SystemCoreClock / ADC_CLOCK_HZ) * ADC_CONV_CLOCK_CYCLES), where ADC_CLOCK_HZ = SystemCoreClock/ADC_CLOCK_DIV
 // ########################### END OF  DO-NOT-TOUCH SETTINGS ############################
 
 // ############################### BOARD VARIANT ###############################
@@ -69,138 +67,130 @@
 // ######################## END OF BOARD VARIANT ###############################
 
 // ############################### BATTERY ###############################
-
-  /* Battery voltage calibration: connect power source.
-  * see How to calibrate.
-  * Write debug output value nr 5 to BAT_CALIB_ADC. make and flash firmware.
-  * Then you can verify voltage on debug output value 6 (to get calibrated voltage multiplied by 100).
-  */
-  #define BAT_FILT_COEF            655      // battery voltage filter coefficient in fixed-point. coef_fixedPoint = coef_floatingPoint * 2^16. In this case 655 = 0.01 * 2^16
-  #define BAT_CALIB_REAL_VOLTAGE  3970      // input voltage measured by multimeter (multiplied by 100). In this case 43.00 V * 100 = 4300
-  #define BAT_CALIB_ADC           1492      // adc-value measured by mainboard (value nr 5 on UART debug output)
-  #define BAT_CELLS                 10      // battery number of cells. Normal Hoverboard battery: 10s
-  #define BAT_LVL2_ENABLE            0      // to beep or not to beep, 1 or 0
-  #define BAT_LVL1_ENABLE            1      // to beep or not to beep, 1 or 0
-  #define BAT_DEAD_ENABLE            1      // to poweroff or not to poweroff, 1 or 0
-  #define BAT_BLINK_INTERVAL        80      // battery led blink interval (80 loops * 5ms ~= 400ms)
-  #define BAT_LVL5                (390 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Green blink:  no beep
-  #define BAT_LVL4                (380 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow:       no beep
-  #define BAT_LVL3                (370 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow blink: no beep 
-  #define BAT_LVL2                (360 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red:          gently beep at this voltage level. [V*100/cell]. In this case 3.60 V/cell
-  #define BAT_LVL1                (350 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red blink:    fast beep. Your battery is almost empty. Charge now! [V*100/cell]. In this case 3.50 V/cell
-  #define BAT_DEAD                (337 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // All leds off: undervoltage poweroff. (while not driving) [V*100/cell]. In this case 3.37 V/cell
-
+/* Battery voltage calibration: connect power source.
+ * see How to calibrate.
+ * Write debug output value nr 5 to BAT_CALIB_ADC. make and flash firmware.
+ * Then you can verify voltage on debug output value 6 (to get calibrated voltage multiplied by 100).
+*/
+#define BAT_FILT_COEF           655       // battery voltage filter coefficient in fixed-point. coef_fixedPoint = coef_floatingPoint * 2^16. In this case 655 = 0.01 * 2^16
+#define BAT_CALIB_REAL_VOLTAGE  3970      // input voltage measured by multimeter (multiplied by 100). In this case 43.00 V * 100 = 4300
+#define BAT_CALIB_ADC           1492      // adc-value measured by mainboard (value nr 5 on UART debug output)
+#define BAT_CELLS               10        // battery number of cells. Normal Hoverboard battery: 10s
+#define BAT_LVL2_ENABLE         0         // to beep or not to beep, 1 or 0
+#define BAT_LVL1_ENABLE         1         // to beep or not to beep, 1 or 0
+#define BAT_DEAD_ENABLE         1         // to poweroff or not to poweroff, 1 or 0
+#define BAT_BLINK_INTERVAL      80        // battery led blink interval (80 loops * 5ms ~= 400ms)
+#define BAT_LVL5                (390 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Green blink:  no beep
+#define BAT_LVL4                (380 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow:       no beep
+#define BAT_LVL3                (370 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow blink: no beep 
+#define BAT_LVL2                (360 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red:          gently beep at this voltage level. [V*100/cell]. In this case 3.60 V/cell
+#define BAT_LVL1                (350 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red blink:    fast beep. Your battery is almost empty. Charge now! [V*100/cell]. In this case 3.50 V/cell
+#define BAT_DEAD                (337 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // All leds off: undervoltage poweroff. (while not driving) [V*100/cell]. In this case 3.37 V/cell
 // ######################## END OF BATTERY ###############################
 
 
 
 // ############################### TEMPERATURE ###############################
-
-  /* Board overheat detection: the sensor is inside the STM/GD chip.
-  * It is very inaccurate without calibration (up to 45°C). So only enable this funcion after calibration!
-  * Let your board cool down.
-  * see <How to calibrate.
-  * Get the real temp of the chip by thermo cam or another temp-sensor taped on top of the chip and write it to TEMP_CAL_LOW_DEG_C.
-  * Write debug output value 8 to TEMP_CAL_LOW_ADC. drive around to warm up the board. it should be at least 20°C warmer. repeat it for the HIGH-values.
-  * Enable warning and/or poweroff and make and flash firmware.
-  */
-  #define TEMP_FILT_COEF           655      // temperature filter coefficient in fixed-point. coef_fixedPoint = coef_floatingPoint * 2^16. In this case 655 = 0.01 * 2^16
-  #define TEMP_CAL_LOW_ADC        1655      // temperature 1: ADC value
-  #define TEMP_CAL_LOW_DEG_C       358      // temperature 1: measured temperature [°C * 10]. Here 35.8 °C
-  #define TEMP_CAL_HIGH_ADC       1588      // temperature 2: ADC value
-  #define TEMP_CAL_HIGH_DEG_C      489      // temperature 2: measured temperature [°C * 10]. Here 48.9 °C
-  #define TEMP_WARNING_ENABLE        0      // to beep or not to beep, 1 or 0, DO NOT ACTIVITE WITHOUT CALIBRATION!
-  #define TEMP_WARNING             600      // annoying fast beeps [°C * 10].  Here 60.0 °C
-  #define TEMP_POWEROFF_ENABLE       0      // to poweroff or not to poweroff, 1 or 0, DO NOT ACTIVITE WITHOUT CALIBRATION!
-  #define TEMP_POWEROFF            650      // overheat poweroff. (while not driving) [°C * 10]. Here 65.0 °C
-
+/* Board overheat detection: the sensor is inside the STM/GD chip.
+ * It is very inaccurate without calibration (up to 45°C). So only enable this funcion after calibration!
+ * Let your board cool down.
+ * see <How to calibrate.
+ * Get the real temp of the chip by thermo cam or another temp-sensor taped on top of the chip and write it to TEMP_CAL_LOW_DEG_C.
+ * Write debug output value 8 to TEMP_CAL_LOW_ADC. drive around to warm up the board. it should be at least 20°C warmer. repeat it for the HIGH-values.
+ * Enable warning and/or poweroff and make and flash firmware.
+*/
+#define TEMP_FILT_COEF          655       // temperature filter coefficient in fixed-point. coef_fixedPoint = coef_floatingPoint * 2^16. In this case 655 = 0.01 * 2^16
+#define TEMP_CAL_LOW_ADC        1655      // temperature 1: ADC value
+#define TEMP_CAL_LOW_DEG_C      358       // temperature 1: measured temperature [°C * 10]. Here 35.8 °C
+#define TEMP_CAL_HIGH_ADC       1588      // temperature 2: ADC value
+#define TEMP_CAL_HIGH_DEG_C     489       // temperature 2: measured temperature [°C * 10]. Here 48.9 °C
+#define TEMP_WARNING_ENABLE     0         // to beep or not to beep, 1 or 0, DO NOT ACTIVITE WITHOUT CALIBRATION!
+#define TEMP_WARNING            600       // annoying fast beeps [°C * 10].  Here 60.0 °C
+#define TEMP_POWEROFF_ENABLE    0         // to poweroff or not to poweroff, 1 or 0, DO NOT ACTIVITE WITHOUT CALIBRATION!
+#define TEMP_POWEROFF           650       // overheat poweroff. (while not driving) [°C * 10]. Here 65.0 °C
 // ######################## END OF TEMPERATURE ###############################
 
 
 
 // ############################### MOTOR CONTROL #########################
+/* GENERAL NOTES:
+ * 1. The parameters here are over-writing the default motor parameters. For all the available parameters check BLDC_controller_data.c
+ * 2. The parameters are represented in fixed point data type for a more efficient code execution
+ * 3. For calibrating the fixed-point parameters use the Fixed-Point Viewer tool (see <https://github.com/EmanuelFeru/FixedPointViewer>)
+ * 4. For more details regarding the parameters and the working principle of the controller please consult the Simulink model
+ * 5. A webview was created, so Matlab/Simulink installation is not needed, unless you want to regenerate the code.
+ * The webview is an html page that can be opened with browsers like: Microsoft Internet Explorer or Microsoft Edge
+ *
+ * NOTES Field Weakening / Phase Advance:
+ * 1. The Field Weakening is a linear interpolation from 0 to FIELD_WEAK_MAX or PHASE_ADV_MAX (depeding if FOC or SIN is selected, respectively)
+ * 2. The Field Weakening starts engaging at FIELD_WEAK_LO and reaches the maximum value at FIELD_WEAK_HI
+ * 3. If you re-calibrate the Field Weakening please take all the safety measures! The motors can spin very fast!
 
-  /* GENERAL NOTES:
-  * 1. The parameters here are over-writing the default motor parameters. For all the available parameters check BLDC_controller_data.c
-  * 2. The parameters are represented in fixed point data type for a more efficient code execution
-  * 3. For calibrating the fixed-point parameters use the Fixed-Point Viewer tool (see <https://github.com/EmanuelFeru/FixedPointViewer>)
-  * 4. For more details regarding the parameters and the working principle of the controller please consult the Simulink model
-  * 5. A webview was created, so Matlab/Simulink installation is not needed, unless you want to regenerate the code.
-  * The webview is an html page that can be opened with browsers like: Microsoft Internet Explorer or Microsoft Edge
-  *
-  * NOTES Field Weakening / Phase Advance:
-  * 1. The Field Weakening is a linear interpolation from 0 to FIELD_WEAK_MAX or PHASE_ADV_MAX (depeding if FOC or SIN is selected, respectively)
-  * 2. The Field Weakening starts engaging at FIELD_WEAK_LO and reaches the maximum value at FIELD_WEAK_HI
-  * 3. If you re-calibrate the Field Weakening please take all the safety measures! The motors can spin very fast!
+   Inputs:
+    - input1[inIdx].cmd and input2[inIdx].cmd: normalized input values. INPUT_MIN to INPUT_MAX
+    - button1 and button2: digital input values. 0 or 1
+    - adc_buffer.l_tx2 and adc_buffer.l_rx2: unfiltered ADC values (you do not need them). 0 to 4095
+   Outputs:
+    - cmdL and cmdR: normal driving INPUT_MIN to INPUT_MAX
+*/
+#define COM_CTRL        0               // [-] Commutation Control Type
+#define SIN_CTRL        1               // [-] Sinusoidal Control Type
+#define FOC_CTRL        2               // [-] Field Oriented Control (FOC) Type
 
-    Inputs:
-      - input1[inIdx].cmd and input2[inIdx].cmd: normalized input values. INPUT_MIN to INPUT_MAX
-      - button1 and button2: digital input values. 0 or 1
-      - adc_buffer.l_tx2 and adc_buffer.l_rx2: unfiltered ADC values (you do not need them). 0 to 4095
-    Outputs:
-      - cmdL and cmdR: normal driving INPUT_MIN to INPUT_MAX
-  */
-  #define COM_CTRL        0               // [-] Commutation Control Type
-  #define SIN_CTRL        1               // [-] Sinusoidal Control Type
-  #define FOC_CTRL        2               // [-] Field Oriented Control (FOC) Type
+#define OPEN_MODE       0               // [-] OPEN mode
+#define VLT_MODE        1               // [-] VOLTAGE mode
+#define SPD_MODE        2               // [-] SPEED mode
+#define TRQ_MODE        3               // [-] TORQUE mode
 
-  #define OPEN_MODE       0               // [-] OPEN mode
-  #define VLT_MODE        1               // [-] VOLTAGE mode
-  #define SPD_MODE        2               // [-] SPEED mode
-  #define TRQ_MODE        3               // [-] TORQUE mode
+// Enable/Disable Motor
+#define MOTOR_LEFT_ENA                  // [-] Enable LEFT motor.  Comment-out if this motor is not needed to be operational
+#define MOTOR_RIGHT_ENA                 // [-] Enable RIGHT motor. Comment-out if this motor is not needed to be operational
 
-  // Enable/Disable Motor
-  #define MOTOR_LEFT_ENA                  // [-] Enable LEFT motor.  Comment-out if this motor is not needed to be operational
-  #define MOTOR_RIGHT_ENA                 // [-] Enable RIGHT motor. Comment-out if this motor is not needed to be operational
+// Control selections
+#define CTRL_TYP_SEL    FOC_CTRL        // [-] Control type selection: COM_CTRL, SIN_CTRL, FOC_CTRL (default)
+#define CTRL_MOD_REQ    SPD_MODE        // [-] Control mode request: OPEN_MODE, VLT_MODE (default), SPD_MODE, TRQ_MODE. Note: SPD_MODE and TRQ_MODE are only available for CTRL_FOC!
+#define DIAG_ENA          1             // [-] Motor Diagnostics enable flag: 0 = Disabled, 1 = Enabled (default)
 
-  // Control selections
-  #define CTRL_TYP_SEL    FOC_CTRL        // [-] Control type selection: COM_CTRL, SIN_CTRL, FOC_CTRL (default)
-  #define CTRL_MOD_REQ    SPD_MODE        // VLT_MODE // [-] Control mode request: OPEN_MODE, VLT_MODE (default), SPD_MODE, TRQ_MODE. Note: SPD_MODE and TRQ_MODE are only available for CTRL_FOC!
-  #define DIAG_ENA        1               // [-] Motor Diagnostics enable flag: 0 = Disabled, 1 = Enabled (default)
+// Limitation settings
+#define I_MOT_MAX         9             // 15 // [A] Maximum single motor current limit
+#define I_DC_MAX         10             // 17 // [A] Maximum stage2 DC Link current limit for Commutation and Sinusoidal types (This is the final current protection. Above this value, current chopping is applied. To avoid this make sure that I_DC_MAX = I_MOT_MAX + 2A)
+#define N_MOT_MAX       250             // 1000 // [rpm] Maximum motor speed limit
 
-  // Limitation settings
-  #define I_MOT_MAX         8             // 15 // [A] Maximum single motor current limit
-  #define I_DC_MAX         10             // 17 // [A] Maximum stage2 DC Link current limit for Commutation and Sinusoidal types (This is the final current protection. Above this value, current chopping is applied. To avoid this make sure that I_DC_MAX = I_MOT_MAX + 2A)
-  #define N_MOT_MAX       250             // 1000 // [rpm] Maximum motor speed limit
+// Field Weakening / Phase Advance
+#define FIELD_WEAK_ENA     0            // [-] Field Weakening / Phase Advance enable flag: 0 = Disabled (default), 1 = Enabled
+#define FIELD_WEAK_MAX     5            // [A] Maximum Field Weakening D axis current (only for FOC). Higher current results in higher maximum speed. Up to 10A has been tested using 10" wheels.
+#define PHASE_ADV_MAX     25            // [deg] Maximum Phase Advance angle (only for SIN). Higher angle results in higher maximum speed.
+#define FIELD_WEAK_HI   1000            // (1000, 1500] Input target High threshold for reaching maximum Field Weakening / Phase Advance. Do NOT set this higher than 1500.
+#define FIELD_WEAK_LO    750            // ( 500, 1000] Input target Low threshold for starting Field Weakening / Phase Advance. Do NOT set this higher than 1000.
 
-  // Field Weakening / Phase Advance
-  #define FIELD_WEAK_ENA     0            // [-] Field Weakening / Phase Advance enable flag: 0 = Disabled (default), 1 = Enabled
-  #define FIELD_WEAK_MAX     5            // [A] Maximum Field Weakening D axis current (only for FOC). Higher current results in higher maximum speed. Up to 10A has been tested using 10" wheels.
-  #define PHASE_ADV_MAX     25            // [deg] Maximum Phase Advance angle (only for SIN). Higher angle results in higher maximum speed.
-  #define FIELD_WEAK_HI   1000            // (1000, 1500] Input target High threshold for reaching maximum Field Weakening / Phase Advance. Do NOT set this higher than 1500.
-  #define FIELD_WEAK_LO    750            // ( 500, 1000] Input target Low threshold for starting Field Weakening / Phase Advance. Do NOT set this higher than 1000.
-
-  // Extra functionality
-  // #define STANDSTILL_HOLD_ENABLE          // [-] Flag to hold the position when standtill is reached. Only available and makes sense for VOLTAGE or TORQUE mode.
-  // #define ELECTRIC_BRAKE_ENABLE           // [-] Flag to enable electric brake and replace the motor "freewheel" with a constant braking when the input torque request is 0. Only available and makes sense for TORQUE mode.
-  // #define ELECTRIC_BRAKE_MAX    100       // (0, 500) Maximum electric brake to be applied when input torque request is 0 (pedal fully released).
-  // #define ELECTRIC_BRAKE_THRES  120       // (0, 500) Threshold below at which the electric brake starts engaging.
-
+// Extra functionality
+// #define STANDSTILL_HOLD_ENABLE          // [-] Flag to hold the position when standtill is reached. Only available and makes sense for VOLTAGE or TORQUE mode.
+// #define ELECTRIC_BRAKE_ENABLE           // [-] Flag to enable electric brake and replace the motor "freewheel" with a constant braking when the input torque request is 0. Only available and makes sense for TORQUE mode.
+// #define ELECTRIC_BRAKE_MAX    100       // (0, 500) Maximum electric brake to be applied when input torque request is 0 (pedal fully released).
+// #define ELECTRIC_BRAKE_THRES  120       // (0, 500) Threshold below at which the electric brake starts engaging.
 // ########################### END OF MOTOR CONTROL ########################
 
 
 
 // ############################## DEFAULT SETTINGS ############################
-#ifdef CONFIG_H
-  // Default settings will be applied at the end of this config file if not set before
-  #define INACTIVITY_TIMEOUT          8     // Minutes of not driving until poweroff. it is not very precise.
-  #define BEEPS_BACKWARD              1     // 0 or 1
-  #define ADC_MARGIN                100     // ADC input margin applied on the raw ADC min and max to make sure the MIN and MAX values are reached even in the presence of noise
-  #define ADC_PROTECT_TIMEOUT       100     // ADC Protection: number of wrong / missing input commands before safety state is taken
-  #define ADC_PROTECT_THRESH        200     // ADC Protection threshold below/above the MIN/MAX ADC values
-  #define AUTO_CALIBRATION_ENA              // Enable/Disable input auto-calibration by holding power button pressed. Un-comment this if auto-calibration is not needed.
+// Default settings will be applied at the end of this config file if not set before
+#define INACTIVITY_TIMEOUT        8       // Minutes of not driving until poweroff. it is not very precise.
+#define BEEPS_BACKWARD            1       // 0 or 1
+#define ADC_MARGIN                100     // ADC input margin applied on the raw ADC min and max to make sure the MIN and MAX values are reached even in the presence of noise
+#define ADC_PROTECT_TIMEOUT       100     // ADC Protection: number of wrong / missing input commands before safety state is taken
+#define ADC_PROTECT_THRESH        200     // ADC Protection threshold below/above the MIN/MAX ADC values
+#define AUTO_CALIBRATION_ENA              // Enable/Disable input auto-calibration by holding power button pressed. Un-comment this if auto-calibration is not needed.
 
-  /* FILTER is in fixdt(0,16,16): VAL_fixedPoint = VAL_floatingPoint * 2^16. In this case 6553 = 0.1 * 2^16
-  * Value of COEFFICIENT is in fixdt(1,16,14)
-  * If VAL_floatingPoint >= 0, VAL_fixedPoint = VAL_floatingPoint * 2^14
-  * If VAL_floatingPoint < 0,  VAL_fixedPoint = 2^16 + floor(VAL_floatingPoint * 2^14).
-  */
-  // Value of RATE is in fixdt(1,16,4): VAL_fixedPoint = VAL_floatingPoint * 2^4. In this case 480 = 30 * 2^4
-  #define DEFAULT_RATE                  480 // 30.0f [-] lower value == slower rate [0, 32767] = [0.0, 2047.9375]. Do NOT make rate negative (>32767)
-  #define DEFAULT_FILTER               6553 // Default for FILTER 0.1f [-] lower value == softer filter [0, 65535] = [0.0 - 1.0].
-  #define DEFAULT_SPEED_COEFFICIENT   16384 // Default for SPEED_COEFFICIENT 1.0f [-] higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14
-  #define DEFAULT_STEER_COEFFICIENT    8192 // Defualt for STEER_COEFFICIENT 0.5f [-] higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case  8192 = 0.5 * 2^14. If you do not want any steering, set it to 0.
-#endif
+/* FILTER is in fixdt(0,16,16): VAL_fixedPoint = VAL_floatingPoint * 2^16. In this case 6553 = 0.1 * 2^16
+ * Value of COEFFICIENT is in fixdt(1,16,14)
+ * If VAL_floatingPoint >= 0, VAL_fixedPoint = VAL_floatingPoint * 2^14
+ * If VAL_floatingPoint < 0,  VAL_fixedPoint = 2^16 + floor(VAL_floatingPoint * 2^14).
+*/
+// Value of RATE is in fixdt(1,16,4): VAL_fixedPoint = VAL_floatingPoint * 2^4. In this case 480 = 30 * 2^4
+#define DEFAULT_RATE                480   // 30.0f [-] lower value == slower rate [0, 32767] = [0.0, 2047.9375]. Do NOT make rate negative (>32767)
+#define DEFAULT_FILTER              6553  // Default for FILTER 0.1f [-] lower value == softer filter [0, 65535] = [0.0 - 1.0].
+#define DEFAULT_SPEED_COEFFICIENT   16384 // Default for SPEED_COEFFICIENT 1.0f [-] higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14
+#define DEFAULT_STEER_COEFFICIENT   8192  // Defualt for STEER_COEFFICIENT 0.5f [-] higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case  8192 = 0.5 * 2^14. If you do not want any steering, set it to 0.
 // ######################### END OF DEFAULT SETTINGS ##########################
 
 
@@ -385,6 +375,86 @@
 
 
 
+// ################################# VARIANT_PPM SETTINGS ##############################
+#ifdef VARIANT_PPM
+/* ###### CONTROL VIA RC REMOTE ######
+ * Right sensor board cable. Channel 1: steering, Channel 2: speed.
+ * https://gist.github.com/peterpoetzi/1b63a4a844162196613871767189bd05
+*/
+  // #define DUAL_INPUTS                     // ADC*(Primary) + PPM(Auxiliary). Uncomment this to use Dual-inputs
+  #ifdef DUAL_INPUTS
+    #define FLASH_WRITE_KEY       0x1104  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
+    #define CONTROL_ADC           0       // use ADC as input. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
+    #define CONTROL_PPM_RIGHT     1       // use PPM-Sum as input on the RIGHT cable. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART3!
+    #define PRI_INPUT1            3,     0, 0, 4095,   0  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+    #define PRI_INPUT2            3,     0, 0, 4095,   0  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+    #define AUX_INPUT1            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+    #define AUX_INPUT2            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+  #else
+    #define FLASH_WRITE_KEY       0x1004  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
+    // #define CONTROL_PPM_LEFT      0       // use PPM-Sum as input on the LEFT cable. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2!
+    #define CONTROL_PPM_RIGHT     0       // use PPM-Sum as input on the RIGHT cable. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART3!
+    #define PRI_INPUT1            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+    #define PRI_INPUT2            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+  #endif
+  #define PPM_NUM_CHANNELS        6       // total number of PPM channels to receive, even if they are not used.
+
+  // #define TANK_STEERING                   // use for tank steering, each input controls each wheel 
+  // #define SUPPORT_BUTTONS                 // Define for PPM buttons support
+  // #define SUPPORT_BUTTONS_LEFT            // use left sensor board cable for button inputs.  Disable DEBUG_SERIAL_USART2!
+  // #define SUPPORT_BUTTONS_RIGHT           // use right sensor board cable for button inputs. Disable DEBUG_SERIAL_USART3!
+
+  #if defined(CONTROL_PPM_RIGHT) && !defined(DUAL_INPUTS)
+    #define DEBUG_SERIAL_USART2           // left sensor cable debug
+  #elif defined(CONTROL_PPM_LEFT) && !defined(DUAL_INPUTS)
+    #define DEBUG_SERIAL_USART3           // right sensor cable debug
+  #endif
+#endif
+// ############################# END OF VARIANT_PPM SETTINGS ############################
+
+
+// ################################# VARIANT_PWM SETTINGS ##############################
+#ifdef VARIANT_PWM
+/* ###### CONTROL VIA RC REMOTE ######
+ * Right sensor board cable. Connect PA2 to channel 1 and PA3 to channel 2 on receiver.
+ * Channel 1: steering, Channel 2: speed.
+*/
+  // #define DUAL_INPUTS                     // ADC*(Primary) + PWM(Auxiliary). Uncomment this to use Dual-inputs
+  #ifdef DUAL_INPUTS
+    #define FLASH_WRITE_KEY       0x1105  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
+    #define CONTROL_ADC           0       // use ADC as input. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
+    #define CONTROL_PWM_RIGHT     1       // use RC PWM as input on the RIGHT cable. Number indicates priority for dual-input. Disable DEBUG_SERIAL_USART3!
+    #define PRI_INPUT1            3,     0, 0, 4095,   0  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+    #define PRI_INPUT2            3,     0, 0, 4095,   0  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+    #define AUX_INPUT1            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+    #define AUX_INPUT2            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+  #else
+    #define FLASH_WRITE_KEY       0x1005  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
+    // #define CONTROL_PWM_LEFT      0       // use RC PWM as input on the LEFT cable. Number indicates priority for dual-input. Disable DEBUG_SERIAL_USART2!
+    #define CONTROL_PWM_RIGHT     0       // use RC PWM as input on the RIGHT cable. Number indicates priority for dual-input. Disable DEBUG_SERIAL_USART3!
+    #define PRI_INPUT1            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+    #define PRI_INPUT2            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+  #endif
+
+  #define FILTER                  6553    // 0.1f [-] fixdt(0,16,16) lower value == softer filter [0, 65535] = [0.0 - 1.0].
+  #define SPEED_COEFFICIENT       16384   // 1.0f [-] fixdt(1,16,14) higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14
+  #define STEER_COEFFICIENT       16384   // 1.0f [-] fixdt(1,16,14) higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14. If you do not want any steering, set it to 0.
+  // #define TANK_STEERING                   // use for tank steering, each input controls each wheel 
+  // #define INVERT_R_DIRECTION
+  // #define INVERT_L_DIRECTION
+  // #define SUPPORT_BUTTONS_LEFT            // use left sensor board cable for button inputs.  Disable DEBUG_SERIAL_USART2!
+  // #define SUPPORT_BUTTONS_RIGHT           // use right sensor board cable for button inputs. Disable DEBUG_SERIAL_USART3!
+
+  #if defined(CONTROL_PWM_RIGHT) && !defined(DUAL_INPUTS)
+    #define DEBUG_SERIAL_USART2           // left sensor cable debug
+  #elif defined(CONTROL_PWM_LEFT) && !defined(DUAL_INPUTS)
+    #define DEBUG_SERIAL_USART3           // right sensor cable debug
+  #endif
+#endif
+// ############################# END OF VARIANT_PWM SETTINGS ############################
+
+
+
 // ################################# VARIANT_IBUS SETTINGS ##############################
 #ifdef VARIANT_IBUS
 /* CONTROL VIA RC REMOTE WITH FLYSKY IBUS PROTOCOL 
@@ -508,45 +578,6 @@
 
 
 
-// ################################# VARIANT_PPM SETTINGS ##############################
-#ifdef VARIANT_PPM
-/* ###### CONTROL VIA RC REMOTE ######
- * Right sensor board cable. Channel 1: steering, Channel 2: speed.
- * https://gist.github.com/peterpoetzi/1b63a4a844162196613871767189bd05
-*/
-  // #define DUAL_INPUTS                     // ADC*(Primary) + PPM(Auxiliary). Uncomment this to use Dual-inputs
-  #ifdef DUAL_INPUTS
-    #define FLASH_WRITE_KEY       0x1104  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
-    #define CONTROL_ADC           0       // use ADC as input. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
-    #define CONTROL_PPM_RIGHT     1       // use PPM-Sum as input on the RIGHT cable. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART3!
-    #define PRI_INPUT1            3,     0, 0, 4095,   0  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-    #define PRI_INPUT2            3,     0, 0, 4095,   0  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-    #define AUX_INPUT1            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-    #define AUX_INPUT2            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-  #else
-    #define FLASH_WRITE_KEY       0x1004  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
-    // #define CONTROL_PPM_LEFT      0       // use PPM-Sum as input on the LEFT cable. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2!
-    #define CONTROL_PPM_RIGHT     0       // use PPM-Sum as input on the RIGHT cable. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART3!
-    #define PRI_INPUT1            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-    #define PRI_INPUT2            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-  #endif
-  #define PPM_NUM_CHANNELS        6       // total number of PPM channels to receive, even if they are not used.
-
-  // #define TANK_STEERING                   // use for tank steering, each input controls each wheel 
-  // #define SUPPORT_BUTTONS                 // Define for PPM buttons support
-  // #define SUPPORT_BUTTONS_LEFT            // use left sensor board cable for button inputs.  Disable DEBUG_SERIAL_USART2!
-  // #define SUPPORT_BUTTONS_RIGHT           // use right sensor board cable for button inputs. Disable DEBUG_SERIAL_USART3!
-
-  #if defined(CONTROL_PPM_RIGHT) && !defined(DUAL_INPUTS)
-    #define DEBUG_SERIAL_USART2           // left sensor cable debug
-  #elif defined(CONTROL_PPM_LEFT) && !defined(DUAL_INPUTS)
-    #define DEBUG_SERIAL_USART3           // right sensor cable debug
-  #endif
-#endif
-// ############################# END OF VARIANT_PPM SETTINGS ############################
-
-
-
 // ################################# VARIANT_TRANSPOTTER SETTINGS ############################
 //TODO ADD VALIDATION
 #ifdef VARIANT_TRANSPOTTER
@@ -566,7 +597,6 @@
   #define PRI_INPUT2          2, -1000, 0, 1000, 0  // dummy input, TRANSPOTTER does not use input limitations
 #endif
 // ############################# END OF VARIANT_TRANSPOTTER SETTINGS ########################
-
 
 
 // ################################# VARIANT_SKATEBOARD SETTINGS ##############################
@@ -601,48 +631,6 @@
   #endif
 #endif
 // ############################# END OF VARIANT_SKATEBOARD SETTINGS ############################
-
-
-
-// ################################# VARIANT_PWM SETTINGS ##############################
-#ifdef VARIANT_PWM 
-/* ###### CONTROL VIA RC REMOTE ######
- * Right sensor board cable. Connect PA2 to channel 1 and PA3 to channel 2 on receiver.
- * Channel 1: steering, Channel 2: speed.
-*/
-  // #define DUAL_INPUTS                     // ADC*(Primary) + PWM(Auxiliary). Uncomment this to use Dual-inputs
-  #ifdef DUAL_INPUTS 
-    #define FLASH_WRITE_KEY       0x1105  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
-    #define CONTROL_ADC           0       // use ADC as input. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
-    #define CONTROL_PWM_RIGHT     1       // use RC PWM as input on the RIGHT cable. Number indicates priority for dual-input. Disable DEBUG_SERIAL_USART3!
-    #define PRI_INPUT1            3,     0, 0, 4095,   0  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-    #define PRI_INPUT2            3,     0, 0, 4095,   0  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-    #define AUX_INPUT1            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-    #define AUX_INPUT2            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-  #else
-    #define FLASH_WRITE_KEY       0x1005  // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
-    // #define CONTROL_PWM_LEFT      0       // use RC PWM as input on the LEFT cable. Number indicates priority for dual-input. Disable DEBUG_SERIAL_USART2!
-    #define CONTROL_PWM_RIGHT     0       // use RC PWM as input on the RIGHT cable. Number indicates priority for dual-input. Disable DEBUG_SERIAL_USART3!
-    #define PRI_INPUT1            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-    #define PRI_INPUT2            3, -1000, 0, 1000, 100  // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-  #endif
-
-  #define FILTER                   6553   // 0.1f [-] fixdt(0,16,16) lower value == softer filter [0, 65535] = [0.0 - 1.0].
-  #define SPEED_COEFFICIENT       16384   // 1.0f [-] fixdt(1,16,14) higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14
-  #define STEER_COEFFICIENT       16384   // 1.0f [-] fixdt(1,16,14) higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14. If you do not want any steering, set it to 0.
-  // #define TANK_STEERING                   // use for tank steering, each input controls each wheel 
-  // #define INVERT_R_DIRECTION
-  // #define INVERT_L_DIRECTION
-  // #define SUPPORT_BUTTONS_LEFT            // use left sensor board cable for button inputs.  Disable DEBUG_SERIAL_USART2!
-  // #define SUPPORT_BUTTONS_RIGHT           // use right sensor board cable for button inputs. Disable DEBUG_SERIAL_USART3!
-
-  #if defined(CONTROL_PWM_RIGHT) && !defined(DUAL_INPUTS)
-    #define DEBUG_SERIAL_USART2           // left sensor cable debug
-  #elif defined(CONTROL_PWM_LEFT) && !defined(DUAL_INPUTS)
-    #define DEBUG_SERIAL_USART3           // right sensor cable debug
-  #endif
-#endif
-// ############################# END OF VARIANT_PWM SETTINGS ############################
 
 
 
@@ -807,4 +795,3 @@
 // ############################# END OF VALIDATE SETTINGS ############################
 
 #endif
-
