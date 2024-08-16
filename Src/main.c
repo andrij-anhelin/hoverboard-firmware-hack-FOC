@@ -564,11 +564,11 @@ int main(void) {
     } else if (TEMP_WARNING_ENABLE && board_temp_deg_c >= TEMP_WARNING) {                             // 5 beeps (low pitch): Mainboard temperature warning
       beepCount(5, 24, 1);
     } else if (BAT_LVL1_ENABLE && batVoltage < BAT_LVL1) {  
-        beepShort(10); beepShort(20); beepShort(30);                                                  // 1 beep fast (medium pitch): Low bat 1
-        //beepCount(0, 10, 6);
+        //beepShort(10); beepShort(20); beepShort(30);                                                  // 1 beep fast (medium pitch): Low bat 1
+        beepCount(0, 10, 6);
     } else if (BAT_LVL2_ENABLE && batVoltage < BAT_LVL2) {                                            // 1 beep slow (medium pitch): Low bat 2
-        beepShort(10); beepShort(20); beepShort(30);
-        //beepCount(0, 10, 30);
+        //beepShort(10); beepShort(20); beepShort(30);
+        beepCount(0, 10, 30);
     } else if (BEEPS_BACKWARD && (((cmdR < -50 || cmdL < -50) && speedAvg < 0) || MultipleTapBrake.b_multipleTap)) { // 1 beep fast (high pitch): Backward spinning motors
       beepCount(0, 5, 1);
       backwardDrive = 1;
