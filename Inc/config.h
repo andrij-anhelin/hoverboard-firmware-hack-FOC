@@ -146,8 +146,8 @@
 #define SPD_MODE        2               // [-] SPEED mode, FOC only
 #define TRQ_MODE        3               // [-] TORQUE mode, FOC only
 
-// Enable/Disable Motor
-//#define MOTOR_LEFT_ENA                  // [-] Enable LEFT motor.  Comment-out if this motor is not needed to be operational
+// Enable/Disable Motor // //
+#define MOTOR_LEFT_ENA                  // [-] Enable LEFT motor.  Comment-out if this motor is not needed to be operational
 #define MOTOR_RIGHT_ENA                 // [-] Enable RIGHT motor. Comment-out if this motor is not needed to be operational
 
 // Control selections
