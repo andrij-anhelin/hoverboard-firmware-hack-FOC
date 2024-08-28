@@ -259,8 +259,7 @@ int main(void) {
       if (enable == 0 && !rtY_Left.z_errCode && !rtY_Right.z_errCode && 
           ABS(input1[inIdx].cmd) < 50 && ABS(input2[inIdx].cmd) < 50){
         beepShort(6);                     // make 2 beeps indicating the motor enable
-        beepShort(4); 
-        HAL_Delay(100);
+        beepShort(4); HAL_Delay(100);
         steerFixdt = speedFixdt = 0;      // reset filters
         enable = 1;                       // enable motors
         #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
@@ -346,7 +345,7 @@ int main(void) {
         // Tank steering (no mixing)
         cmdL = steer; 
         cmdR = speed;
-      #else
+      #else 
         // ####### MIXER #######
         mixerFcn(speed << 4, steer << 4, &cmdR, &cmdL);   // This function implements the equations above
       #endif
@@ -564,12 +563,10 @@ int main(void) {
       beepCount(4, 24, 1);
     } else if (TEMP_WARNING_ENABLE && board_temp_deg_c >= TEMP_WARNING) {                             // 5 beeps (low pitch): Mainboard temperature warning
       beepCount(5, 24, 1);
-    } else if (BAT_LVL1_ENABLE && batVoltage < BAT_LVL1) {  
-        //beepShort(10); beepShort(20); beepShort(30);                                                  // 1 beep fast (medium pitch): Low bat 1
-        beepCount(0, 10, 6);
+    } else if (BAT_LVL1_ENABLE && batVoltage < BAT_LVL1) {                                            // 1 beep fast (medium pitch): Low bat 1
+      beepCount(0, 10, 6);
     } else if (BAT_LVL2_ENABLE && batVoltage < BAT_LVL2) {                                            // 1 beep slow (medium pitch): Low bat 2
-        //beepShort(10); beepShort(20); beepShort(30);
-        beepCount(0, 10, 30);
+      beepCount(0, 10, 30);
     } else if (BEEPS_BACKWARD && (((cmdR < -50 || cmdL < -50) && speedAvg < 0) || MultipleTapBrake.b_multipleTap)) { // 1 beep fast (high pitch): Backward spinning motors
       beepCount(0, 5, 1);
       backwardDrive = 1;
@@ -583,7 +580,7 @@ int main(void) {
 
     // ####### INACTIVITY TIMEOUT #######
     if (abs(cmdL) > 50 || abs(cmdR) > 50) {
-      inactivity_timeout_counter = 0; 
+      inactivity_timeout_counter = 0;
     }
 
     #if defined(CRUISE_CONTROL_SUPPORT) || defined(STANDSTILL_HOLD_ENABLE)
@@ -593,27 +590,20 @@ int main(void) {
       }
     #endif
 
-    if(INACTIVITY_TIMEOUT){
-
-      if (inactivity_timeout_counter > (INACTIVITY_TIMEOUT * 60 * 1000) / (DELAY_IN_MAIN_LOOP + 1)) {  
-        // rest of main loop needs maybe 1ms
-        if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3){
-          printf("Powering off, wheels were inactive for too long\r\n");
-        }//#endif
-        poweroff();
-      }
-    }else{
-        inactivity_timeout_counter = 0; 
+    if (inactivity_timeout_counter > (INACTIVITY_TIMEOUT * 60 * 1000) / (DELAY_IN_MAIN_LOOP + 1)) {  // rest of main loop needs maybe 1ms
+      #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
+        printf("Powering off, wheels were inactive for too long\r\n");
+      #endif
+      poweroff();
     }
-    
-        // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);                 
-        // This is to measure the main() loop duration with an oscilloscope connected to LED_PIN
-        // Update states
-        inIdx_prev = inIdx;
-        buzzerTimer_prev = buzzerTimer;
-        main_loop_counter++;
 
 
+    // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);                 // This is to measure the main() loop duration with an oscilloscope connected to LED_PIN
+    // Update states
+    inIdx_prev = inIdx;
+    buzzerTimer_prev = buzzerTimer;
+    main_loop_counter++;
+    }
   }
 }
 
