@@ -593,16 +593,19 @@ int main(void) {
       }
     #endif
 
-    if(INACTIVITY_TIMEOUT){//
+    if(INACTIVITY_TIMEOUT){
 
       if (inactivity_timeout_counter > (INACTIVITY_TIMEOUT * 60 * 1000) / (DELAY_IN_MAIN_LOOP + 1)) {  
         // rest of main loop needs maybe 1ms
-      #if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3)
-        printf("Powering off, wheels were inactive for too long\r\n");
-      #endif
-      poweroff();
+        if defined(DEBUG_SERIAL_USART2) || defined(DEBUG_SERIAL_USART3){
+          printf("Powering off, wheels were inactive for too long\r\n");
+        }//#endif
+        poweroff();
+      }
+    }else{
+        inactivity_timeout_counter = 0; 
     }
-
+    
         // HAL_GPIO_TogglePin(LED_PORT, LED_PIN);                 
         // This is to measure the main() loop duration with an oscilloscope connected to LED_PIN
         // Update states
@@ -610,9 +613,7 @@ int main(void) {
         buzzerTimer_prev = buzzerTimer;
         main_loop_counter++;
 
-    }else{
-        inactivity_timeout_counter = 0; 
-    }
+
   }
 }
 
