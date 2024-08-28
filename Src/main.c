@@ -583,7 +583,7 @@ int main(void) {
 
     // ####### INACTIVITY TIMEOUT #######
     if (abs(cmdL) > 50 || abs(cmdR) > 50) {
-      inactivity_timeout_counter = 0;
+      inactivity_timeout_counter = 0; 
     }
 
     #if defined(CRUISE_CONTROL_SUPPORT) || defined(STANDSTILL_HOLD_ENABLE)
@@ -593,7 +593,7 @@ int main(void) {
       }
     #endif
 
-    if(INACTIVITY_TIMEOUT){
+    if(INACTIVITY_TIMEOUT){//
 
       if (inactivity_timeout_counter > (INACTIVITY_TIMEOUT * 60 * 1000) / (DELAY_IN_MAIN_LOOP + 1)) {  
         // rest of main loop needs maybe 1ms
@@ -611,7 +611,7 @@ int main(void) {
         main_loop_counter++;
 
     }else{
-        inactivity_timeout_counter = 0;
+        inactivity_timeout_counter = 0; 
     }
   }
 }
